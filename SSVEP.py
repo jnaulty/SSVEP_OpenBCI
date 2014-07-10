@@ -34,22 +34,32 @@ class SSVEP(object):
 
         
     def start(self):
+
+        ###Testing framerate grabber###
         print self.mywin.getActualFrameRate()
-        Trialclock = core.Clock()
+        self.Trialclock = core.Clock()
         self.freq = 60/(self.frame_on+self.frame_off)
-        #self.collector = csv_collector.CSVCollector(fname=self.fname)
-        #self.collector.start()
-        
+
+        """     
+        ###commented this section for testing w/out OpenBCI###
+
+        self.collector = csv_collector.CSVCollector(fname=self.fname)
+        self.collector.start()
+        """
         #possibly convert trialtime into frames given refresh rate (normally set at 60Hz)
-        #self.framerate = self.mywin.getActualFrameRate()
-        #self.trialframes = trialtime/self.framerate
+        self.framerate = self.mywin.getActualFrameRate()
+        self.trialframes = self.trialtime/self.framerate
      
-        while Trialclock.getTime()<self.trialtime:
+        while self.Trialclock.getTime()<self.trialtime:
     
             self.pattern1.setAutoDraw(True)
             self.fixation.setAutoDraw(True)
-            #self.collector.tag(self.freq)
-   
+
+            """         
+            ###Tagging the data with the calculated frequency###
+
+            self.collector.tag(self.freq)
+            """
             for frameN in range(self.frame_on):
                 self.mywin.flip()
                 
@@ -59,10 +69,18 @@ class SSVEP(object):
             for frameN in range(self.frame_off):
                 self.mywin.flip()
             self.pattern2.setAutoDraw(False)
-            #self.collector.tag(0)
+     
+            """
+            ###Tagging the Data at end of stimulus###
+            self.collector.tag(0)
+            """
 
   
-#test cases 
+"""
+Here are some test cases 
+Just run this program by itself if you don't want to use run.py
+
+"""
 
 if "__name__" == "__main__":
     stimuli75Hz = SSVEP(frame_on=4, frame_off=4)

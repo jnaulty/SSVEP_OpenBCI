@@ -6,21 +6,14 @@
 
 
 from SSVEP import *
-from psychopy import gui
+from InputBox import InputBox
 import csv_collector
 
 
 
-# Store info about the experiment session
-expName = 'SSVP5_75'  # from the Builder filename that created this script
-expInfo = {u'session': u'001', u'participant': u'001'}
-dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
-if dlg.OK == False: 
-    core.quit()  # user pressed cancel
-
-
-# Setup filename for saving
-filename = 'data/%s_%s' %(expInfo['participant'], expInfo['session'])
+expinfos = InputBox()
+filename = expinfos.file()
+print filename
 
 #set of stimuli followed by frequency of stimuli. 
 
