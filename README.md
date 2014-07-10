@@ -23,10 +23,10 @@ To start:
 		open run.py
 		hit CTRL + r
 
-	Enter Participants Name and Session Number.
+	Enter Participants Name and Session Number in GUI
 
 TODO:
 	Allow for Gui to select frequencies and number of stimuli.
-	
+
 
 
