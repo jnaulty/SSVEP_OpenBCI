@@ -7,7 +7,7 @@
 
 from SSVEP import *
 from InputBox import InputBox
-import csv_collector
+
 
 
 
@@ -19,12 +19,13 @@ print filename
 
 #set of stimuli followed by frequency of stimuli. 
 
-stimuli75 = SSVEP(frame_on=4, frame_off=4, fname=filename, port = port_name)
+
+stimuli75 = SSVEP(frame_on=4, frame_off=4, fname=filename+'75hz', port=port_name)
 stimuli75.start()
 
-stimuli12=SSVEP(frame_on=3, frame_off=2, fname=filename, port = port_name)
+stimuli12=SSVEP(frame_on=3, frame_off=2, fname=filename+'12hz', port=port_name)
 stimuli12.start()
 
-stimuli20=SSVEP(frame_on=2, frame_off=1, fname=filename, port = port_name)
+stimuli20=SSVEP(frame_on=2, frame_off=1, fname=filename+'20hz', port=port_name)
 stimuli20.start()
 

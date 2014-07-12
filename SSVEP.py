@@ -46,35 +46,48 @@ class SSVEP(object):
 """
         self.collector = csv_collector.CSVCollector(fname=self.fname, port= self.port)
         self.collector.start()
-        
+
         #possibly convert trialtime into frames given refresh rate (normally set at 60Hz)
         self.framerate = self.mywin.getActualFrameRate()
-        self.trialframes = self.trialtime/self.framerate
+        #divison here makes it tricky
+        self.trialframes = self.trialtime/60
+        self.should_tag = False
      
         while self.Trialclock.getTime()<self.trialtime:
-    
-            self.pattern1.setAutoDraw(True)
+
             self.fixation.setAutoDraw(True)
+            self.pattern1.setAutoDraw(True)
 
             """         
             ###Tagging the data with the calculated frequency###
-"""
-            self.collector.tag(self.freq)
+            Attempting to only get 1 sample tagged, however, this is hard.
+            """         
+            if self.should_tag == False:
+                self.collector.tag(self.freq)
+                self.mywin.flip()
             
+            self.collector.tag(0)
+            self.should_tag = True
+            
+           
             for frameN in range(self.frame_on):
                 self.mywin.flip()
                 
             self.pattern1.setAutoDraw(False)
             self.pattern2.setAutoDraw(True)
             
+            
             for frameN in range(self.frame_off):
                 self.mywin.flip()
             self.pattern2.setAutoDraw(False)
+
+
      
             """
             ###Tagging the Data at end of stimulus###
-            """
-            self.collector.tag(0)
+            
+  """          
+        self.collector.disconnect()
             
 
   
