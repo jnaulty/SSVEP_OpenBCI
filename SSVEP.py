@@ -12,18 +12,18 @@ class SSVEP(object):
     #which equals 2/60 == 30Hz
     #Flash frequency = refreshrate/(frame_on+frame_off)
     
-    def __init__(self, mywin= visual.Window([800, 600], monitor='testMonitor', units='deg'),
-                frame_on=5, frame_off=5, trialtime = 5.0, fname='SSVEP.csv'):
+    def __init__(self, mywin= visual.Window([800, 600], fullscr=False, monitor='testMonitor', units='deg'),
+                frame_on=5, frame_off=5, trialtime = 5.0, fname='SSVEP.csv', port = 'COM9'):
         
         self.mywin = mywin
         self.pattern1 = visual.GratingStim(win=self.mywin, name='pattern1',units='cm', 
                         tex=None, mask=None,
-                        ori=0, pos=[0, 0], size=3, sf=1, phase=0.0,
+                        ori=0, pos=[0, 0], size=10, sf=1, phase=0.0,
                         color=[1,1,1], colorSpace='rgb', opacity=1,
                         texRes=256, interpolate=True, depth=-1.0)
         self.pattern2 = visual.GratingStim(win=self.mywin, name='pattern2',units='cm', 
                         tex=None, mask=None,
-                        ori=0, pos=[0, 0], size=3, sf=1, phase=0,
+                        ori=0, pos=[0, 0], size=10, sf=1, phase=0,
                         color=[-1,-1,-1], colorSpace='rgb', opacity=1,
                         texRes=256, interpolate=True, depth=-2.0)
         self.fixation = visual.GratingStim(win=self.mywin, size = 0.3, pos=[0,0], sf=0, rgb=-1)
@@ -31,6 +31,7 @@ class SSVEP(object):
         self.frame_off = frame_off
         self.trialtime = trialtime
         self.fname = fname
+        self.port = port
 
         
     def start(self):
@@ -42,10 +43,10 @@ class SSVEP(object):
 
         """     
         ###commented this section for testing w/out OpenBCI###
-
-        self.collector = csv_collector.CSVCollector(fname=self.fname)
+"""
+        self.collector = csv_collector.CSVCollector(fname=self.fname, port= self.port)
         self.collector.start()
-        """
+        
         #possibly convert trialtime into frames given refresh rate (normally set at 60Hz)
         self.framerate = self.mywin.getActualFrameRate()
         self.trialframes = self.trialtime/self.framerate
@@ -57,9 +58,9 @@ class SSVEP(object):
 
             """         
             ###Tagging the data with the calculated frequency###
-
+"""
             self.collector.tag(self.freq)
-            """
+            
             for frameN in range(self.frame_on):
                 self.mywin.flip()
                 
@@ -72,8 +73,9 @@ class SSVEP(object):
      
             """
             ###Tagging the Data at end of stimulus###
-            self.collector.tag(0)
             """
+            self.collector.tag(0)
+            
 
   
 """
