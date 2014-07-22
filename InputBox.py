@@ -11,7 +11,7 @@ class InputBox(object):
 	def __init__(self):
 		# Store info about the experiment session
 		self.expName = 'SSVEP'
-		self.expInfo = {u'session': u'001', u'participant': u'001', u'port': u'COM9',
+		self.expInfo = {u'session': u'001', u'participant': u'001', u'port': u'/dev/ttyACM0',
 				 u'flash_duration': u'5', u'numtrials': u'1', u'waitdur': u'2'}
 		self.dlg = gui.DlgFromDict(dictionary=self.expInfo, title=self.expName)
 		if self.dlg.OK == False: 

@@ -26,17 +26,18 @@ waitduration = expinfos.waitduration()
 #set of stimuli followed by frequency of stimuli. 
 
 
-stimuli75 = SSVEP(frame_on=4, frame_off=4, fname=filename, 
+stimuli75 = SSVEP(frame_on=4, frame_off=4, fname=filename, port=port_addr,
 	trialdur=flash_dur, numtrials=trialnums, waitdur=waitduration)
 stimuli75.start()
 print 1
 
-stimuli12=SSVEP(frame_on=3, frame_off=2, fname=filename,
+"""
+stimuli12=SSVEP(frame_on=3, frame_off=2, fname=filename, port=port_addr,
 	trialdur=flash_dur, numtrials=trialnums, waitdur=waitduration)
 stimuli12.start()
 print 2
 
-stimuli20=SSVEP(frame_on=2, frame_off=1, fname=filename,
+stimuli20=SSVEP(frame_on=2, frame_off=1, fname=filename, port=port_addr,
 	trialdur=flash_dur, numtrials=trialnums, waitdur=waitduration)
 stimuli20.start()
-
+"""

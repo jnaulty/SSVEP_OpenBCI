@@ -12,8 +12,9 @@ class SSVEP(object):
     #which equals 2/60 == 30Hz
     #Flash frequency = refreshrate/(frame_on+frame_off)
     
-    def __init__(self, mywin= visual.Window([800, 600], fullscr=False, monitor='testMonitor', units='deg'),
-                frame_on=5, frame_off=5, trialdur = 5.0, fname='SSVEP.csv', numtrials=1, waitdur=2):
+    def __init__(self, mywin= visual.Window([800, 600], fullscr=False, monitor='testMonitor',units='deg'),
+                frame_on=5, frame_off=5, trialdur = 5.0, port='/dev/ttyACM0',
+                fname='SSVEP.csv', numtrials=1, waitdur=2):
         
         self.mywin = mywin
         self.pattern1 = visual.GratingStim(win=self.mywin, name='pattern1',units='cm', 
@@ -33,6 +34,7 @@ class SSVEP(object):
         self.fname = fname
         self.numtrials = numtrials
         self.waitdur = waitdur
+        self.port = port
 
     def collecting(self):
         self.collector = csv_collector.CSVCollector(fname=self.fname, port= self.port)
@@ -50,18 +52,22 @@ class SSVEP(object):
         self.freq = 60/(self.frame_on+self.frame_off)
 
         #start saving data from EEG device.
-        #self.collecting()
+        self.collecting()
 
         #possibly convert trialdur into frames given refresh rate (normally set at 60Hz)
         self.framerate = self.mywin.getActualFrameRate()
         #divison here makes it tricky
         self.trialframes = self.trialdur/60
         self.count = 0
+        
 
         while self.count<self.numtrials:
+            
+            #reset tagging
+            self.should_tag = False
+            self.epoch(0)
             while self.Trialclock.getTime()<self.trialdur:
-                #resets tagging
-                self.should_tag = False
+
                 #draws square and fixation on screen.
                 self.fixation.setAutoDraw(True)
                 self.pattern1.setAutoDraw(True)
@@ -70,14 +76,16 @@ class SSVEP(object):
                 ###Tagging the data with the calculated frequency###
                 Attempting to only get 1 sample tagged, however, this is hard.
                 """         
-                
-                #if self.should_tag == False:
+                """alternative way to tag
+                if self.should_tag == False:
                     #self.epoch(self.freq)
-                    #self.mywin.flip()
+                    self.epoch(70)
+                    self.mywin.flip()
                 
-                #self.epoch(0)
+                self.epoch(0)
                 self.should_tag = True
-                
+                """
+                self.epoch(70)
                
                 for frameN in range(self.frame_on):
                     self.mywin.flip()
@@ -91,7 +99,10 @@ class SSVEP(object):
                 for frameN in range(self.frame_off):
                     self.mywin.flip()
                 self.pattern2.setAutoDraw(False)
-            
+                
+            self.epoch(0)
+            #clean black screen off
+            self.mywin.flip()
             #wait certain time for next trial
             core.wait(self.waitdur)
             #reset clock for next trial
@@ -103,7 +114,7 @@ class SSVEP(object):
             ###Tagging the Data at end of stimulus###
             
     """          
-        #self.collector.disconnect()
+        self.collector.disconnect()
             
 
   
