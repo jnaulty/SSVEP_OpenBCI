@@ -8,39 +8,51 @@ from psychopy import gui
 
 class InputBox(object):
 
-	def __init__(self):
-		# Store info about the experiment session
-		self.expName = 'SSVEP'
-		self.expInfo = {u'session': u'001', u'participant': u'001', u'port': u'/dev/ttyACM0',
-				 u'flash_duration': u'5', u'numtrials': u'1', u'waitdur': u'2'}
-		self.dlg = gui.DlgFromDict(dictionary=self.expInfo, title=self.expName)
-		if self.dlg.OK == False: 
-		    core.quit()  # user pressed cancel
+  def __init__(self):
+    self.myDlg = gui.Dlg(title="OpenBCI Menu")
+    self.myDlg.addText('Subject info')
+    self.myDlg.addField('Participant', 001)#0
+    self.myDlg.addField('Session', 001)#1
+    self.myDlg.addField('Port', '/dev/tty/ACM0')#2
+    self.myDlg.addText('Frequency Selction')
+    self.myDlg.addField('Frequency', choices=["None", "6", "7","10","12"])#3
+    self.myDlg.addText('Flash Duration')
+    self.myDlg.addField('Duration', '5')#4
+    self.myDlg.addText('Time after stimulus')
+    self.myDlg.addField('InterTrialTime', '2')#5
+    self.myDlg.addText('Choose Number of Trials')
+    self.myDlg.addField('NumberTrials', '1')#6
+    self.myDlg.show()  # show dialog and wait for OK or Cancel
+    if self.myDlg.OK:  # then the user pressed OK
+      self.thisInfo = self.myDlg.data
+      self.options = {'participant': self.thisInfo[0], 'session': self.thisInfo[1], 'port': self.thisInfo[2], 'Frequency': self.thisInfo[3], 'Duration': self.thisInfo[4], 'InterTrialTime': self.thisInfo[5], 'NumberTrials': self.thisInfo[6]}
+    
+    else:
+      print 'User Cancelled'
 
+            # Setup filename for saving
+    self.fname = '%s_%s.csv' %(self.options['participant'], self.options['session'])
+    #port name
+    self.port = '%s' %self.options['port']
+    #flash duration
+    self.flash_duration= '%s' %self.options['Duration']
+    #number of trials
+    self.num_trials= '%s' %self.options['NumberTrials']
+    #time to wait between trials
+    self.wait_dur= '%s' %self.options['InterTrialTime']
 
-		# Setup filename for saving
-		self.fname = '%s_%s.csv' %(self.expInfo['participant'], self.expInfo['session'])
-		#port name
-		self.port = '%s' %self.expInfo['port']
-		#flash duration
-		self.flash_duration= '%s' %self.expInfo['flash_duration']
-		#number of trials
-		self.num_trials= '%s' %self.expInfo['numtrials']
-		#time to wait between trials
-		self.wait_dur= '%s' %self.expInfo['waitdur']
+  def file(self):
+          return str(self.fname)
 
-	def file(self):
-		return self.fname
+  def port_name(self):
+          return str(self.port)
 
-	def port_name(self):
-		return self.port
-
-	def stim_duration(self):
-		return int(self.flash_duration)
-	
-	def stim_trials(self):
-		return int(self.num_trials)
-	
-	def waitduration(self):
-		return int(self.wait_dur)
+  def stim_duration(self):
+          return int(self.flash_duration)
+  
+  def stim_trials(self):
+          return int(self.num_trials)
+  
+  def waitduration(self):
+          return int(self.wait_dur)
 

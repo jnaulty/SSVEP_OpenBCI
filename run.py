@@ -21,13 +21,14 @@ print filename
 flash_dur = expinfos.stim_duration()
 trialnums = expinfos.stim_trials()
 waitduration = expinfos.waitduration()
+print port_addr
+print type(port_addr)
 
 
 #set of stimuli followed by frequency of stimuli. 
 
 
-stimuli75 = SSVEP(frame_on=4, frame_off=4, fname=filename, port=port_addr,
-	trialdur=flash_dur, numtrials=trialnums, waitdur=waitduration)
+stimuli75 = SSVEP(frame_on=4, frame_off=4, fname=filename, port=port_addr, trialdur=flash_dur, numtrials=trialnums, waitdur=waitduration)
 stimuli75.start()
 print 1
 
