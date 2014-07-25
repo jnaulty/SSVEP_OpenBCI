@@ -33,9 +33,11 @@ if myDlg.OK:  # then the user pressed OK
       time_plot=raw_plotter.RawPlotter()
       time_plot.start()				
     elif value == 'FFT':
-      fft_plot=spectral_plotter.SpectralPlotter()
-      fft_plot=.start()
+      fft_plot=raw_plotter.RawPlotter()
+      fft_plot.start()
     elif value == 'Spectogram':
+      specgram=spectral_plotter.SpectralPlotter()
+      specgram.start()
             
       print 'Spectogram'
     elif value == 'SSVEP':
