@@ -20,34 +20,32 @@ myDlg.addField('Experiments', choices=["None", "SSVEP", "ERP",
 	"Motor_Imagery"])#4
 myDlg.show()  # show dialog and wait for OK or Cancel
 if myDlg.OK:  # then the user pressed OK
-		thisInfo = myDlg.data
-		options = {'participant': thisInfo[0], 'session': thisInfo[1],
-				'port': thisInfo[2], 'plot': thisInfo[3],
-				'experiment': thisInfo[4]}
-		fname = '%s_%s.csv' %(options['participant'], options['session'])
-		port = options['port']
+  thisInfo = myDlg.data
+  options = {'participant': thisInfo[0], 'session': thisInfo[1],'port': thisInfo[2], 'plot': thisInfo[3],'experiment': thisInfo[4]}
+  fname = '%s_%s.csv' %(options['participant'],    options['session'])
+  port = options['port']
 		
 		
 		#iterate through dictionary to see if Function is called
 		#right now just using print statements, soon insert actual python scripts
-		for value in options.itervalues():
-			if value == 'Spectral_Plot':
-				time_plot=raw_plotter.RawPlotter()
-				time_plot.start()				
-			elif value == 'FFT':
-				fft_plot=spectral_plotter.SpectralPlotter()
-				fft_plot=.start()
-			elif value == 'Spectogram':
-				
-				print 'Spectogram'
-			elif value == 'SSVEP':
-				import run
-			elif value == 'ERP':
-				print 'ERP'
-			elif value == 'Motor_Imagery':
-				print 'Imagine!'
-			
+  for value in options.itervalues():
+    if value == 'Spectral_Plot':
+      time_plot=raw_plotter.RawPlotter()
+      time_plot.start()				
+    elif value == 'FFT':
+      fft_plot=spectral_plotter.SpectralPlotter()
+      fft_plot=.start()
+    elif value == 'Spectogram':
+            
+      print 'Spectogram'
+    elif value == 'SSVEP':
+      import run
+    elif value == 'ERP':
+      print 'ERP'
+    elif value == 'Motor_Imagery':
+      print 'Imagine!'
+    
 			
 
 else:
-		print 'user cancelled'
+  print 'user cancelled'

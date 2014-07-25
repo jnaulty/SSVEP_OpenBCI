@@ -24,6 +24,21 @@ START_BYTE = bytes(0xA0)  # start of data packet
 END_BYTE = bytes(0xC0)  # end of data packet
 
 
+def find_port():
+    import platform, glob
+
+    s = platform.system()
+    if s == 'Linux':
+        p = glob.glob('/dev/ttyACM*')
+        
+    elif s == 'Darwin':
+        p = glob.glob('/dev/tty.usbmodemfd*')
+
+    if len(p) >= 1:
+        return p[0]
+    else:
+        return None
+        
 class OpenBCIBoard(object):
   """
 
@@ -35,7 +50,12 @@ class OpenBCIBoard(object):
 
   """
 
-  def __init__(self, port='/dev/tty.usbmodemfd121', baud=115200, filter_data=True):
+  def __init__(self, port=None, baud=115200, filter_data=True):
+    if not port:
+      port = find_port()
+      if not port:
+        raise OSError('Cannot find OpenBCI port')
+        
     self.ser = serial.Serial(port, baud)
     self.dump_registry_data()
     self.streaming = False
@@ -201,37 +221,37 @@ class OpenBCIBoard(object):
     if toggle_position == 1: 
       if channel is 1:
         self.ser.write('q')
-      if channel is 1:
+      if channel is 2:
         self.ser.write('w')
-      if channel is 1:
+      if channel is 3:
         self.ser.write('e')
-      if channel is 1:
+      if channel is 4:
         self.ser.write('r')
-      if channel is 1:
+      if channel is 5:
         self.ser.write('t')
-      if channel is 1:
+      if channel is 6:
         self.ser.write('y')
-      if channel is 1:
+      if channel is 7:
         self.ser.write('u')
-      if channel is 1:
+      if channel is 8:
         self.ser.write('i')
     #Commands to set toggle to off position
     elif toggle_position == 0: 
       if channel is 1:
         self.ser.write('1')
-      if channel is 1:
+      if channel is 2:
         self.ser.write('2')
-      if channel is 1:
+      if channel is 3:
         self.ser.write('3')
-      if channel is 1:
+      if channel is 4:
         self.ser.write('4')
-      if channel is 1:
+      if channel is 5:
         self.ser.write('5')
-      if channel is 1:
+      if channel is 6:
         self.ser.write('6')
-      if channel is 1:
+      if channel is 7:
         self.ser.write('7')
-      if channel is 1:
+      if channel is 8:
         self.ser.write('8')
 
 

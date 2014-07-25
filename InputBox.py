@@ -6,6 +6,8 @@ SSVEP_GUI
 
 from psychopy import gui
 
+
+
 class InputBox(object):
 
   def __init__(self):

@@ -52,7 +52,7 @@ class SSVEP(object):
         self.freq = 60/(self.frame_on+self.frame_off)
 
         #start saving data from EEG device.
-        self.collecting()
+        #self.collecting()
 
         #possibly convert trialdur into frames given refresh rate (normally set at 60Hz)
         self.framerate = self.mywin.getActualFrameRate()
@@ -65,7 +65,7 @@ class SSVEP(object):
             
             #reset tagging
             self.should_tag = False
-            self.epoch(0)
+            #self.epoch(0)
             while self.Trialclock.getTime()<self.trialdur:
 
                 #draws square and fixation on screen.
@@ -85,7 +85,7 @@ class SSVEP(object):
                 self.epoch(0)
                 self.should_tag = True
                 """
-                self.epoch(70)
+                #self.epoch(70)
                
                 for frameN in range(self.frame_on):
                     self.mywin.flip()
@@ -100,7 +100,7 @@ class SSVEP(object):
                     self.mywin.flip()
                 self.pattern2.setAutoDraw(False)
                 
-            self.epoch(0)
+            #self.epoch(0)
             #clean black screen off
             self.mywin.flip()
             #wait certain time for next trial
@@ -114,7 +114,7 @@ class SSVEP(object):
             ###Tagging the Data at end of stimulus###
             
     """          
-        self.collector.disconnect()
+        #self.collector.disconnect()
             
 
   
