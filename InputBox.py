@@ -13,7 +13,7 @@ class InputBox(object):
   def __init__(self):
     self.myDlg = gui.Dlg(title="OpenBCI Menu")
     self.myDlg.addText('Subject info')
-    self.myDlg.addField('Participant', 001)#0
+    self.myDlg.addField('Participant:')#0
     self.myDlg.addField('Session', 001)#1
     self.myDlg.addField('Port', '/dev/tty/ACM0')#2
     self.myDlg.addText('Frequency Selction')
