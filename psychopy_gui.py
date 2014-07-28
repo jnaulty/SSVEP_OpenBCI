@@ -9,7 +9,7 @@ import multi_plotter
 
 myDlg = gui.Dlg(title="OpenBCI Menu")
 myDlg.addText('Subject info')
-myDlg.addField('Participant', 001)#0
+myDlg.addField('Participant')#0
 myDlg.addField('Session', 001)#1
 myDlg.addField('Port', '/dev/tty/ACM0')#2
 myDlg.addText('Visual Options')
@@ -41,7 +41,7 @@ if myDlg.OK:  # then the user pressed OK
             
       print 'Spectogram'
     elif value == 'SSVEP':
-      import run
+      import run_ssvep
     elif value == 'ERP':
       print 'ERP'
     elif value == 'Motor_Imagery':

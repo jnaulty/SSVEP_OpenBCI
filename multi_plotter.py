@@ -7,6 +7,7 @@ import numpy as np
 from multiprocessing import Process
 import sys
 
+sys.path.append('..')
 from open_bci import *
 from pylab import *
 import mne
@@ -52,17 +53,17 @@ class MultiPlotter(object):
         plt.clf()
         subplot(2, 2, 1)
         plot(signal)
-        
+
         subplot(2, 2, 3)
         fourier = np.fft.rfft(signal)
         freq = np.fft.rfftfreq(signal.size, d=1.0/250.0)
         plot(freq, np.log(abs(fourier)))
         ylim([-12, 0])
         xlim([0, 60])
-                
+
         subplot(1, 2, 2)
         wsize = 64
-        
+
         X = mne.time_frequency.stft(signal, wsize)
         freqs = mne.time_frequency.stftfreq(wsize, sfreq=fs)
 
@@ -113,6 +114,5 @@ class MultiPlotter(object):
         show()
 
         self.should_plot = True
-
 
         self.background_plot()

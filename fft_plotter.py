@@ -48,16 +48,16 @@ class RawPlotter(object):
         for i in range(8):
             #subplot(8, 1, i+1)
             signal = self.data[..., i]
-            signal[np.isnan(signal)] = 0
+            signal = signal[~np.isnan(signal)]
             #signal = signal * np.hamming(len(signal))
-            # fourier = np.fft.rfft(signal)
-            # freq = np.fft.rfftfreq(signal.size, d=1.0/250.0)
-            plot(signal, label=str(i+1))
-            # plot(freq, np.log(abs(fourier)), label=str(i+1))
+            fourier = np.fft.rfft(signal)
+            freq = np.fft.rfftfreq(signal.size, d=1.0/250.0)
+            # plot(signal, label=str(i+1))
+            plot(freq, np.log(abs(fourier)), label=str(i+1))
             
             #title('channel {0}'.format(i+1))
-        ylim([-0.0005, 0.0005])
-        # ylim([-12, 0])
+        # ylim([-0.0005, 0.0005])
+        ylim([-12, 0])
         legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
                ncol=4, mode="expand", borderaxespad=0.)
 

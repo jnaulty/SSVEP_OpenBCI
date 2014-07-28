@@ -7,6 +7,7 @@ import numpy as np
 from multiprocessing import Process
 import sys
 
+sys.path.append('..')
 from open_bci import *
 from pylab import *
 import mne

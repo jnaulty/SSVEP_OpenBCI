@@ -17,7 +17,7 @@ class InputBox(object):
     self.myDlg.addField('Session', 001)#1
     self.myDlg.addField('Port', '/dev/tty/ACM0')#2
     self.myDlg.addText('Frequency Selction')
-    self.myDlg.addField('Frequency', choices=["None", "6", "7","10","12"])#3
+    self.myDlg.addField('Frequency', choices=["None", "6", "7","10","12", "15", "20"])#3
     self.myDlg.addText('Flash Duration')
     self.myDlg.addField('Duration', '5')#4
     self.myDlg.addText('Time after stimulus')
