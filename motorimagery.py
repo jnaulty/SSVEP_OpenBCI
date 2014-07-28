@@ -41,6 +41,10 @@ class MotorImagery(object):
             x = list(range(len(self.labels)))
             random.shuffle(x)
             self.pattern_order.extend(x)
+
+    def stop(self):
+        self.mywin.close()
+        core.quit()
         
     def start(self):
         
@@ -88,6 +92,8 @@ class MotorImagery(object):
      
         self.collector.stop()
         self.collector.disconnect()
+        self.stop()
+
             
 
   

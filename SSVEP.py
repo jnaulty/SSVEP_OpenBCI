@@ -42,6 +42,10 @@ class SSVEP(object):
 
     def epoch(self, mark):
         self.collector.tag(mark)
+
+    def stop(self):
+        self.mywin.close()
+        core.quit()
         
    
     def start(self):
@@ -115,6 +119,8 @@ class SSVEP(object):
             
     """          
         #self.collector.disconnect()
+        self.stop()
+
             
 
   
