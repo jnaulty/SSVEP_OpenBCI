@@ -3,6 +3,7 @@
 #SSVEP class.
 
 from psychopy import visual, core, event
+import random
 import csv_collector
 
 class MotorImagery(object):
@@ -13,27 +14,19 @@ class MotorImagery(object):
     #Flash frequency = refreshrate/(frame_on+frame_off)
     
     def __init__(self, mywin= visual.Window([800, 600], fullscr=False, monitor='testMonitor',units='deg'),
-                frame_on=5, frame_off=5, trialdur = 5.0, port='/dev/ttyACM0',
-                fname='SSVEP.csv', numtrials=4, waitdur=2):
+                 trialdur = 10.0, port=None,
+                 fname='motor_imagery.csv', num_repeats=4, waitdur=5):
         
         self.mywin = mywin
-        self.frame_on = frame_on
-        self.frame_off = frame_off
         self.trialdur = trialdur
         self.fname = fname
-        self.numtrials = numtrials
+        self.num_repeats = num_repeats
         self.waitdur = waitdur
         self.port = port
-        self.text1='Right-Hand'
-        self.text2='Left-Hand'
-        self.text3='Feet'
-        self.text4='Tongue'
-        self.pattern1 = visual.TextStim(win=self.mywin, text=self.text1)
-        self.pattern2 = visual.TextStim(win=self.mywin, text=self.text2)
-        self.pattern3 = visual.TextStim(win=self.mywin, text=self.text3)
-        self.pattern4 = visual.TextStim(win=self.mywin, text=self.text4)
+        self.labels = ['Right hand', 'Left hand', 'Feet', 'Tongue']
+        self.patterns = [ visual.TextStim(win=self.mywin, text=lbl) for lbl in self.labels ]
 
-        
+                
 
     def collecting(self):
         self.collector = csv_collector.CSVCollector(fname=self.fname, port= self.port)
@@ -42,7 +35,13 @@ class MotorImagery(object):
     def epoch(self, mark):
         self.collector.tag(mark)
         
-   
+    def generate_pattern_order(self):
+        self.pattern_order = list()
+        for i in range(self.num_repeats):
+            x = list(range(len(self.labels)))
+            random.shuffle(x)
+            self.pattern_order.extend(x)
+        
     def start(self):
         
         
@@ -50,71 +49,45 @@ class MotorImagery(object):
         ###Testing framerate grabber###
         print self.mywin.getActualFrameRate()
         self.Trialclock = core.Clock()
-        self.freq = 60/(self.frame_on+self.frame_off)
-
-        #start saving data from EEG device.
-        #self.collecting()
 
         #possibly convert trialdur into frames given refresh rate (normally set at 60Hz)
-        self.framerate = self.mywin.getActualFrameRate()
-        #divison here makes it tricky
-        self.trialframes = self.trialdur/60
-        self.count = 0
+        # self.framerate = self.mywin.getActualFrameRate()
+        # self.trialframes = self.trialdur * self.framerate
         
+        self.generate_pattern_order()
+        self.count = 0
+        self.trial_num = 0
+        
+        #start saving data from EEG device.
+        self.collecting()
 
-        while self.count<self.numtrials:
+        while self.trial_num < len(self.labels) * self.num_repeats:
 
             
             #reset tagging
             self.should_tag = False
-            #self.epoch(0)
-            while self.Trialclock.getTime()<self.trialdur:
+            self.epoch(0)
 
-                #draws square and fixation on screen.
-                if self.count == 0:
-                    self.pattern1.draw()
-                    self.mywin.flip()
+            # self.Trialclock.reset()    
+
+            p = self.pattern_order[self.trial_num]
+            
+            self.patterns[p].draw()
+            self.mywin.flip()
+            self.epoch(p)
+            core.wait(self.trialdur)
                 
-                elif self.count == 1:
-                    self.pattern2.draw()
-                    self.mywin.flip()
-                elif self.count == 2:
-                    self.pattern3.draw()
-                    self.mywin.flip()
-                elif self.count == 3:
-                    self.pattern4.draw()
-                    self.mywin.flip()
-                    
-                """         
-                ###Tagging the data with the calculated frequency###
-                Attempting to only get 1 sample tagged, however, this is hard.
-                """         
-                """alternative way to tag
-                if self.should_tag == False:
-                    #self.epoch(self.freq)
-                    self.epoch(70)
-                    self.mywin.flip()
-                
-                self.epoch(0)
-                self.should_tag = True
-                """
-                #self.epoch(70)
-                
-            #self.epoch(0)
             #clean black screen off
             self.mywin.flip()
+            self.epoch(0)
             #wait certain time for next trial
             core.wait(self.waitdur)
-            #reset clock for next trial
-            self.Trialclock.reset()    
+
             #count number of trials
-            self.count+=1
+            self.trial_num += 1
      
-            """
-            ###Tagging the Data at end of stimulus###
-            
-    """          
-        #self.collector.disconnect()
+        self.collector.stop()
+        self.collector.disconnect()
             
 
   
@@ -124,9 +97,9 @@ Just run this program by itself if you don't want to use run.py
 
 """
 
-motorimagery = MotorImagery()
-
-motorimagery.start()
+if __name__ == '__main__':
+    motorimagery = MotorImagery()
+    motorimagery.start()
 
 
 
